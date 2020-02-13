@@ -5,22 +5,54 @@ Page({
    * 页面的初始数据
    */
   data: {
+    movieList: []
 
   },
 
+  /**
+   * 获取电影列表
+   */
+  getMovieList() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true,
+    })
+    wx.cloud.callFunction({
+      name: 'movielist',
+      data: {
+        start: this.data.movieList.length,
+        count: 10
+      }
+    }).then(res => {
+      console.log(res, '结果')
+      wx.hideLoading()
+      this.setData({
+
+        movieList: this.data.movieList.concat(JSON.parse(res.result).subjects)
+      })
+
+    }).catch(err => {
+      wx.hideLoading()
+
+    })
+  },
+  /**
+   * 去详情
+   */
+  gotoComment: function(event) {
+    var movieid = event.target.dataset.movieid;
+
+    console.log(movieid)
+    wx.navigateTo({
+      url: '../comment/comment?movieid=' + movieid,
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
 
-    wx.cloud.callFunction({
-      name: 'movielist'
-    }).then(res => {
-      console.log(res,'结果')
-
-    }).catch(err => {
-
-    })
+    this.getMovieList()
   },
 
   /**
@@ -56,6 +88,7 @@ Page({
    */
   onPullDownRefresh: function() {
 
+    console.log('顶顶顶顶顶顶顶')
   },
 
   /**
@@ -63,6 +96,7 @@ Page({
    */
   onReachBottom: function() {
 
+    this.getMovieList()
   },
 
   /**
