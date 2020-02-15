@@ -5,6 +5,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo:''
+
+  },
+  getUserInfo:function(a){
+    this.setData({
+      userInfo:a.detail.rawData
+    })
+  },
+  getUserPhone(a){
+    console.log(a)
 
   },
 
