@@ -1,2 +1,21 @@
-<!--pages/profile/profile.wxml-->
-<text>pages/profile/profile.wxml</text>
+<view style="width:400rpx;height:100%">
+  头像:
+  <!-- <open-data type="groupName" open-gid="xxxxxx"></open-data> -->
+  <open-data type="userAvatarUrl"></open-data>
+  性别:
+  <open-data type="userGender" lang="zh_CN"></open-data>
+  用户昵称:
+  <open-data type="userNickName"></open-data>
+  用户所在城市:
+  <open-data type="userCity"></open-data>
+  用户所在省份:
+  <open-data type="userProvince"></open-data>
+  用户所在国家:
+  <open-data type="userCountry"></open-data>
+  用户的语言:
+  <open-data type="userLanguage"></open-data>
+</view>
+<button open-type="contact" type="primary" size="mini">打开客服</button>
+<button open-type="getUserInfo" bindgetuserinfo="getUserInfo" type="primary" size="mini">获取用户信息</button>
+<view>{{userInfo}}</view>
+<button open-type="getPhoneNumber" bindgetphonenumber="getUserPhone" type="primary" size="mini">电话</button>
