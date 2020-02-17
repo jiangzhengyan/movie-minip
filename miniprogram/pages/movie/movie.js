@@ -13,6 +13,7 @@ Page({
    * 获取电影列表
    */
   getMovieList() {
+
     wx.showLoading({
       title: '加载中...',
       mask: true,
@@ -21,18 +22,29 @@ Page({
       name: 'movielist',
       data: {
         start: this.data.movieList.length,
-        count: 10
+        count:10
       }
     }).then(res => {
       console.log(res, '结果')
       wx.hideLoading()
+      if (JSON.parse(res.result).subjects.length == 0) {
+        wx.showToast({
+          title: '已经是最后一条了!',
+        })
+        return;
+      }
+
       this.setData({
 
         movieList: this.data.movieList.concat(JSON.parse(res.result).subjects)
       })
 
     }).catch(err => {
+      console.log(err,'失败')
       wx.hideLoading()
+      wx.showToast({
+        title: '加载失败!',
+      })
 
     })
   },
@@ -87,8 +99,11 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
+    this.setData({
+      movieList:[],
+    })
 
-    console.log('顶顶顶顶顶顶顶')
+    this.getMovieList()
   },
 
   /**
