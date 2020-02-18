@@ -12,7 +12,7 @@ Page({
   /**
    * 获取电影列表
    */
-  getMovieList() {
+  getMovieList(e) {
 
     wx.showLoading({
       title: '加载中...',
@@ -21,7 +21,7 @@ Page({
     wx.cloud.callFunction({
       name: 'movielist',
       data: {
-        start: this.data.movieList.length,
+        start: e===1?0:this.data.movieList.length,
         count:10
       }
     }).then(res => {
@@ -35,8 +35,7 @@ Page({
       }
 
       this.setData({
-
-        movieList: this.data.movieList.concat(JSON.parse(res.result).subjects)
+        movieList: e === 1 ? JSON.parse(res.result).subjects:this.data.movieList.concat(JSON.parse(res.result).subjects)
       })
 
     }).catch(err => {
@@ -99,11 +98,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-    this.setData({
-      movieList:[],
-    })
-
-    this.getMovieList()
+   
+    this.getMovieList(1)
   },
 
   /**
